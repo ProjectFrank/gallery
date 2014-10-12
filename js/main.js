@@ -130,9 +130,7 @@ $(window).load(function() {
 		    left: fullLeft + 'px',
 		    width: '100%',
 		    height: fullHeight + 'px'
-		}, 1000, 'easeInOutCubic', function() {
-		    $(this).removeClass('hover-zoom');
-		});
+		}, 1000, 'easeInOutCubic');
 	    } else {
 		var scaleFactor = viewportHeight / picHeight;
 		var fullWidth = picWidth * scaleFactor;
@@ -143,10 +141,9 @@ $(window).load(function() {
 		    left: fullLeft + 'px',
 		    height: '100%',
 		    width: fullWidth + 'px'
-		}, 1000, 'easeInOutCubic', function() {
-		    $(this).removeClass('hover-zoom');
-		});
+		}, 1000, 'easeInOutCubic');
 	    }
+	    $(this).removeClass('hover-zoom');
 	    $(this).closest('.gallery').append('<i class="fa fa-chevron-circle-left"></i><i class="fa fa-chevron-circle-right"></i>');
 	    $(this).closest('.gallery').children('.lightbox').animate({
 		opacity: 0.8
@@ -233,6 +230,9 @@ $(window).load(function() {
 
     // Resize/reposition elements on window resize or orientation change
     $(window).on('resize orientationChanged', function() {
+	if ($currentlyEnlarged.hasClass('hover-zoom')) {
+	    return;
+	}
 	var viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 	var viewportHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 	var viewportAspect = viewportWidth / viewportHeight;
@@ -261,8 +261,7 @@ $(window).load(function() {
 		left: fullLeft + 'px',
 		height: '100%',
 		width: fullWidth + 'px'
-	    });
-	    
+	    });	    
 	}
 
 	
