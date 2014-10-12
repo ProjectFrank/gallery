@@ -16,7 +16,7 @@ $(window).load(function() {
 	if (!description) {
 	    description = 'This is a descsription';
 	}
-	var html = '<div class="picture hover-zoom">';
+	var html = '<div class="picture not-enlarged">';
 	html += image;
 	html += '<div class="caption">';
 	html += '<h4>' + title + '</h4>';
@@ -73,33 +73,47 @@ $(window).load(function() {
     var $currentlyEnlarged;
     
     $('.picture').on('click', function(event) {
+
+	// If the close button is clicked
 	if ($(event.target).hasClass('fa-times')) {
-	    console.log('clicked X');
+
+	    // Calculate position to return picture to based on position
+	    // of placeholder
 	    var docPosition = $(window).scrollTop();
 	    var picPosition = $(this).prev().offset().top;
 	    var fixedPositionTop = picPosition - docPosition;
 	    var fixedPositionLeft = $(this).prev().offset().left;
 	    console.log(fixedPositionTop, fixedPositionLeft);
+
+	    // Remove lightbox controls
 	    $(this).find('.fa-times').remove();
 	    $(this).closest('.gallery').children('.fa-chevron-circle-left').remove();
 	    $(this).closest('.gallery').children('.fa-chevron-circle-right').remove();
+	    // Animate picture returning to its spot in the gallery
 	    $(this).animate({
 		top: fixedPositionTop + 'px',
 		left: fixedPositionLeft + 'px',
 		width: $columns.width() + 'px',
 		height: $(this).prev().height()
 	    }, 1000, 'easeInOutCubic', function() {
+		// Remove placeholder after animation complete
 		$(this).prev().remove();
+
+		// Remove all styling from .picture div after animation complete
 		$(this).attr('style', 'opacity: 1');
-		$(this).addClass('hover-zoom');
+		$(this).addClass('not-enlarged');
 	    });
+
+	    // Fade out and remove lightbox
 	    $(this).closest('.gallery').children('.lightbox').animate({
 		opacity: 0
 	    }, 1000, 'easeInOutCubic', function() {
 		$(this).closest('.gallery').children('.lightbox').remove();
 	    });
 	    $(this).find('.caption').removeAttr('style');
-	} else if ($(this).hasClass('hover-zoom')) {
+	}
+	// If a not enlarged picture is clicked
+	else if ($(this).hasClass('not-enlarged')) {
 	    // Set $currentlyEnlarged to the clicked picture
 	    $currentlyEnlarged = $(this);
 	    var docPosition = $(window).scrollTop();
@@ -143,7 +157,7 @@ $(window).load(function() {
 		    width: fullWidth + 'px'
 		}, 1000, 'easeInOutCubic');
 	    }
-	    $(this).removeClass('hover-zoom');
+	    $(this).removeClass('not-enlarged');
 	    $(this).closest('.gallery').append('<i class="fa fa-chevron-circle-left"></i><i class="fa fa-chevron-circle-right"></i>');
 	    $(this).closest('.gallery').children('.lightbox').animate({
 		opacity: 0.8
@@ -153,7 +167,12 @@ $(window).load(function() {
 	    $(this).find('.caption').css('height', '200px');
 	}
     });
+
+    // Listener for lightbox arrow controls
     $('.gallery').on('click', '.fa-chevron-circle-right, .fa-chevron-circle-left', function(e) {
+
+	// Figure out which picture should be displayed next
+	// If the right arrow is clicked
 	if ($(e.target).hasClass('fa-chevron-circle-right')) {
 	    var $nextPicture = $currentlyEnlarged.next();
     	    if (!$nextPicture.length) {
@@ -163,7 +182,9 @@ $(window).load(function() {
     		}
     		$nextPicture = $nextColumn.children('.picture').first();
     	    }
-	} else {
+	}
+	// If the left arrow is clicked
+	else {
 	    var $nextPicture = $currentlyEnlarged.prev().prev();
     	    if (!$nextPicture.length) {
     		var $nextColumn = $currentlyEnlarged.parent().prev('.column');
@@ -173,11 +194,12 @@ $(window).load(function() {
     		$nextPicture = $nextColumn.children('.picture').last();
     	    }
 	}
-	
+
+	// Put current picture away	
 	$currentlyEnlarged.removeAttr('style');
 	$currentlyEnlarged.children('.caption').css('height', '100%');
 	$currentlyEnlarged.children('.fa-times').remove();
-	$currentlyEnlarged.addClass('hover-zoom');
+	$currentlyEnlarged.addClass('not-enlarged');
 	$currentlyEnlarged.prev().remove();
 
 	// Calculate picWidth and picHeight
@@ -190,6 +212,7 @@ $(window).load(function() {
 	var viewportAspect = viewportWidth / viewportHeight;
 	var pictureAspect = picWidth / picHeight;
 	
+	// Bring out the next picture
 	if (pictureAspect >= viewportAspect) {
 	    var scaleFactor = viewportWidth / picWidth;
 	    var fullHeight = picHeight * scaleFactor;
@@ -215,12 +238,13 @@ $(window).load(function() {
 	    left: fullLeft + 'px',
 	    'z-index': 998
 	});
-	$nextPicture.removeClass('hover-zoom');
+	$nextPicture.removeClass('not-enlarged');
 	$nextPicture.children('.caption').css({
 	    height: '200px'
 	});
-	// add placeholder
-	$nextPicture.before('<div class="placeholder">' + $currentlyEnlarged.children('img')[0].outerHTML + '</div>');
+	
+	// Add placeholder
+	$nextPicture.before('<div class="placeholder">' + $nextPicture.children('img')[0].outerHTML + '</div>');
 	$nextPicture.prev().children('img').css({
 	    width: '100%'
 	});
@@ -230,7 +254,7 @@ $(window).load(function() {
 
     // Resize/reposition elements on window resize or orientation change
     $(window).on('resize orientationChanged', function() {
-	if ($currentlyEnlarged.hasClass('hover-zoom')) {
+	if ($currentlyEnlarged.hasClass('not-enlarged')) {
 	    return;
 	}
 	var viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
@@ -240,6 +264,7 @@ $(window).load(function() {
 	var picHeight = $currentlyEnlarged.prev().height();
 	var pictureAspect = picWidth / picHeight;
 
+	// If picture is wider than viewport
 	if (pictureAspect >= viewportAspect) {
 	    var scaleFactor = viewportWidth / picWidth;
 	    var fullHeight = picHeight * scaleFactor;
@@ -251,7 +276,9 @@ $(window).load(function() {
 		width: '100%',
 		height: fullHeight + 'px'
 	    });
-	} else {
+	}
+	// If picture is narrower than viewport
+	else {
 	    var scaleFactor = viewportHeight / picHeight;
 	    var fullWidth = picWidth * scaleFactor;
 	    var fullTop = 0;
@@ -263,10 +290,6 @@ $(window).load(function() {
 		width: fullWidth + 'px'
 	    });	    
 	}
-
-	
-	// Recalculate top and left values so that image is centered
-	// Recalculate height and width values
 	
     });
 });
