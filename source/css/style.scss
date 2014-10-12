@@ -1,0 +1,155 @@
+* {
+    box-sizing: border-box;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    padding-top: 50px;
+}
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    .logo {
+	float: left;
+    }
+    ul {
+	float: right;
+    }
+    li {
+	float: left;
+	display: block;
+	a {
+	    padding: 50px 20px 0 20px;
+	    color: #888;
+	    text-transform: uppercase;
+	    text-decoration: none;
+	}
+    }
+}
+
+.sidebar {
+    float: left;
+    width: 25%;
+}
+
+.gallery {
+    position: relative;
+    float: left;
+    width: 75%;
+}
+
+.gallery-selector {
+    padding: 20px;
+    img {
+	float: left;
+    }
+    .text {
+	float: left;
+    }
+}
+
+.column {
+    width: 33.333%;
+    float: left;
+}
+
+.picture {
+    position: relative;
+    width: 100%;
+    /* opacity: 0; */
+    /* transition: opacity 0.5s ease; */
+    overflow: hidden;
+    img {
+	width: 100%;
+	transition: transform 0.5s ease;
+    }
+    .fa-times {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	font-size: 3rem;
+	color: #fff;
+	opacity: 0;
+	visibility: hidden;
+	text-shadow: 0 0 1px #888;
+	transition: opacity 0.5s ease;
+	&:hover {
+	    text-shadow: 0 0 1px #000;
+	}
+    }
+    &:hover {
+	.caption {
+	    display: block;
+	    opacity: 1;
+	    visibility: visible;
+	}
+	.fa-times {
+	    visibility: visible;
+	    opacity: 1;
+	}
+    }
+    &.hover-zoom:hover {
+	img {
+	    transform: scale(1.2);
+	}
+    }
+}
+
+.caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    padding-bottom: 50px;
+    display: none;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    opacity: 0;
+    visibility: hidden;
+    transition: height 1s ease-in-out;
+}
+
+.lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+    opacity: 0;
+    z-index: 500;
+}
+
+.fa-chevron-circle-left, .fa-chevron-circle-right {
+    position: fixed;
+    top: calc(50vh - 3rem);
+    font-size: 6rem;
+    color: #fff;
+    text-shadow: 0 0 1px #888;
+    z-index: 999;
+    &:hover {
+	text-shadow: 0 0 1px #000;
+    }
+}
+
+.fa-chevron-circle-left {
+    left: 20px;
+}
+
+.fa-chevron-circle-right {
+    right: 20px;
+}
