@@ -187,14 +187,13 @@ nav {
 .picture {
   position: relative;
   width: 100%;
-  cursor: pointer;
   overflow: hidden; }
-  /* line 196, /Users/frankwang/src/gallery/source/css/style.scss */
+  /* line 195, /Users/frankwang/src/gallery/source/css/style.scss */
   .picture img {
     width: 100%;
     -webkit-transition: -webkit-transform 0.5s ease;
     transition: transform 0.5s ease; }
-  /* line 200, /Users/frankwang/src/gallery/source/css/style.scss */
+  /* line 199, /Users/frankwang/src/gallery/source/css/style.scss */
   .picture .fa-times {
     position: absolute;
     top: 20px;
@@ -207,25 +206,37 @@ nav {
     -webkit-transition: opacity 0.5s ease;
     transition: opacity 0.5s ease;
     cursor: pointer; }
-    /* line 211, /Users/frankwang/src/gallery/source/css/style.scss */
+    /* line 210, /Users/frankwang/src/gallery/source/css/style.scss */
     .picture .fa-times:hover {
       text-shadow: 0 0 1px #000; }
-  /* line 216, /Users/frankwang/src/gallery/source/css/style.scss */
+    @media (max-width: 680px) {
+      /* line 199, /Users/frankwang/src/gallery/source/css/style.scss */
+      .picture .fa-times {
+        visibility: visible;
+        opacity: 1; } }
+  /* line 219, /Users/frankwang/src/gallery/source/css/style.scss */
   .picture:hover .caption {
-    display: block;
     opacity: 1;
     visibility: visible; }
-  /* line 221, /Users/frankwang/src/gallery/source/css/style.scss */
+  /* line 223, /Users/frankwang/src/gallery/source/css/style.scss */
   .picture:hover .fa-times {
     visibility: visible;
     opacity: 1; }
-  /* line 227, /Users/frankwang/src/gallery/source/css/style.scss */
-  .picture.not-enlarged:hover img {
+
+/* line 230, /Users/frankwang/src/gallery/source/css/style.scss */
+.not-enlarged {
+  cursor: pointer; }
+  /* line 233, /Users/frankwang/src/gallery/source/css/style.scss */
+  .not-enlarged:hover img {
     -webkit-transform: scale(1.2);
     -ms-transform: scale(1.2);
     transform: scale(1.2); }
+  @media (max-width: 680px) {
+    /* line 238, /Users/frankwang/src/gallery/source/css/style.scss */
+    .not-enlarged .caption {
+      visibility: hidden; } }
 
-/* line 233, /Users/frankwang/src/gallery/source/css/style.scss */
+/* line 244, /Users/frankwang/src/gallery/source/css/style.scss */
 .caption {
   position: absolute;
   bottom: 0;
@@ -234,15 +245,19 @@ nav {
   height: 100%;
   padding: 20px;
   padding-bottom: 50px;
-  display: none;
   background: rgba(0, 0, 0, 0.5);
   color: #fff;
   opacity: 0;
   visibility: hidden;
-  -webkit-transition: height 0.8s ease-in-out;
-  transition: height 0.8s ease-in-out; }
+  -webkit-transition: height 0.8s ease-in-out, opacity 0.3s ease-in-out;
+  transition: height 0.8s ease-in-out, opacity 0.3s ease-in-out; }
+  @media (max-width: 680px) {
+    /* line 244, /Users/frankwang/src/gallery/source/css/style.scss */
+    .caption {
+      visibility: visible;
+      opacity: 1; } }
 
-/* line 249, /Users/frankwang/src/gallery/source/css/style.scss */
+/* line 263, /Users/frankwang/src/gallery/source/css/style.scss */
 .lightbox {
   position: fixed;
   top: 0;
@@ -253,7 +268,7 @@ nav {
   opacity: 0;
   z-index: 500; }
 
-/* line 260, /Users/frankwang/src/gallery/source/css/style.scss */
+/* line 274, /Users/frankwang/src/gallery/source/css/style.scss */
 .fa-chevron-circle-left, .fa-chevron-circle-right {
   position: fixed;
   top: calc(50vh - 3rem);
@@ -262,19 +277,19 @@ nav {
   text-shadow: 0 0 1px #888;
   z-index: 999;
   cursor: pointer; }
-  /* line 268, /Users/frankwang/src/gallery/source/css/style.scss */
+  /* line 282, /Users/frankwang/src/gallery/source/css/style.scss */
   .fa-chevron-circle-left:hover, .fa-chevron-circle-right:hover {
     text-shadow: 0 0 6px #fff; }
 
-/* line 273, /Users/frankwang/src/gallery/source/css/style.scss */
+/* line 287, /Users/frankwang/src/gallery/source/css/style.scss */
 .fa-chevron-circle-left {
   left: 20px; }
 
-/* line 277, /Users/frankwang/src/gallery/source/css/style.scss */
+/* line 291, /Users/frankwang/src/gallery/source/css/style.scss */
 .fa-chevron-circle-right {
   right: 20px; }
 
-/* line 281, /Users/frankwang/src/gallery/source/css/style.scss */
+/* line 295, /Users/frankwang/src/gallery/source/css/style.scss */
 footer {
   position: absolute;
   left: 0;

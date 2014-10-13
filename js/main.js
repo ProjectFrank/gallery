@@ -109,50 +109,53 @@ $(window).load(function() {
     // Curently enlarged picture
     var $currentlyEnlarged = $('.picture').first();
     
+    function putAway() {
+	// Calculate position to return picture to based on position
+	// of placeholder
+	var docPosition = $(window).scrollTop();
+	var picPosition = $currentlyEnlarged.prev().offset().top;
+	var fixedPositionTop = picPosition - docPosition;
+	var fixedPositionLeft = $currentlyEnlarged.prev().offset().left;
+	console.log(fixedPositionTop, fixedPositionLeft);
+
+	// Remove lightbox controls
+	$currentlyEnlarged.find('.fa-times').remove();
+	$currentlyEnlarged.closest('.gallery').children('.fa-chevron-circle-left').remove();
+	$currentlyEnlarged.closest('.gallery').children('.fa-chevron-circle-right').remove();
+	// Animate picture returning to its spot in the gallery
+	TweenLite.to($currentlyEnlarged, 0.8, {
+	    top: fixedPositionTop + 'px',
+	    left: fixedPositionLeft + 'px',
+	    width: $currentlyEnlarged.parent().width() + 'px',
+	    height: $currentlyEnlarged.prev().height(),
+	    ease: Cubic.easeInOut,
+	    onComplete: function() {
+		// Remove placeholder after animation complete
+		$currentlyEnlarged.prev().remove();
+
+		// Remove all styling from .picture div after animation complete
+		$currentlyEnlarged.attr('style', 'opacity: 1');
+		$currentlyEnlarged.addClass('not-enlarged');		    
+	    }
+	});
+
+	// Fade out and remove lightbox
+	TweenLite.to($currentlyEnlarged.closest('.gallery').children('.lightbox'), 0.8, {
+	    opacity: 0,
+	    ease: Cubic.easeInOut,
+	    onComplete: function() {
+		$currentlyEnlarged.closest('.gallery').children('.lightbox').remove();
+	    }
+	});
+	$currentlyEnlarged.find('.caption').removeAttr('style');	
+    }
+
     $('.picture').on('click', function(event) {
 	var $picture = $(this);
 
 	// If the close button is clicked
 	if ($(event.target).hasClass('fa-times')) {
-
-	    // Calculate position to return picture to based on position
-	    // of placeholder
-	    var docPosition = $(window).scrollTop();
-	    var picPosition = $picture.prev().offset().top;
-	    var fixedPositionTop = picPosition - docPosition;
-	    var fixedPositionLeft = $picture.prev().offset().left;
-	    console.log(fixedPositionTop, fixedPositionLeft);
-
-	    // Remove lightbox controls
-	    $picture.find('.fa-times').remove();
-	    $picture.closest('.gallery').children('.fa-chevron-circle-left').remove();
-	    $picture.closest('.gallery').children('.fa-chevron-circle-right').remove();
-	    // Animate picture returning to its spot in the gallery
-	    TweenLite.to($picture, 0.8, {
-		top: fixedPositionTop + 'px',
-		left: fixedPositionLeft + 'px',
-		width: $picture.parent().width() + 'px',
-		height: $picture.prev().height(),
-		ease: Cubic.easeInOut,
-		onComplete: function() {
-		    // Remove placeholder after animation complete
-		    $picture.prev().remove();
-
-		    // Remove all styling from .picture div after animation complete
-		    $picture.attr('style', 'opacity: 1');
-		    $picture.addClass('not-enlarged');		    
-		}
-	    });
-
-	    // Fade out and remove lightbox
-	    TweenLite.to($picture.closest('.gallery').children('.lightbox'), 0.8, {
-		opacity: 0,
-		ease: Cubic.easeInOut,
-		onComplete: function() {
-		    $picture.closest('.gallery').children('.lightbox').remove();
-		}
-	    });
-	    $picture.find('.caption').removeAttr('style');
+	    putAway();
 	}
 	// If a not enlarged picture is clicked
 	else if ($picture.hasClass('not-enlarged')) {
@@ -248,7 +251,6 @@ $(window).load(function() {
 	$currentlyEnlarged.prev().remove();
 
 	// Calculate picWidth and picHeight
-
 	var picWidth = $nextPicture.parent().width();
 	var picHeight = $nextPicture.height();
 	var viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
@@ -349,43 +351,6 @@ $(window).load(function() {
     });
 
     $('.gallery').on('click', '.lightbox', function() {
-	// Calculate position to return picture to based on position
-	// of placeholder
-	var docPosition = $(window).scrollTop();
-	var picPosition = $currentlyEnlarged.prev().offset().top;
-	var fixedPositionTop = picPosition - docPosition;
-	var fixedPositionLeft = $currentlyEnlarged.prev().offset().left;
-	console.log(fixedPositionTop, fixedPositionLeft);
-
-	// Remove lightbox controls
-	$currentlyEnlarged.find('.fa-times').remove();
-	$currentlyEnlarged.closest('.gallery').children('.fa-chevron-circle-left').remove();
-	$currentlyEnlarged.closest('.gallery').children('.fa-chevron-circle-right').remove();
-	// Animate picture returning to its spot in the gallery
-	TweenLite.to($currentlyEnlarged, 0.8, {
-	    top: fixedPositionTop + 'px',
-	    left: fixedPositionLeft + 'px',
-	    width: $currentlyEnlarged.parent().width() + 'px',
-	    height: $currentlyEnlarged.prev().height(),
-	    ease: Cubic.easeInOut,
-	    onComplete: function() {
-		// Remove placeholder after animation complete
-		$currentlyEnlarged.prev().remove();
-
-		// Remove all styling from .picture div after animation complete
-		$currentlyEnlarged.attr('style', 'opacity: 1');
-		$currentlyEnlarged.addClass('not-enlarged');		    
-	    }
-	});
-
-	// Fade out and remove lightbox
-	TweenLite.to($currentlyEnlarged.closest('.gallery').children('.lightbox'), 0.8, {
-	    opacity: 0,
-	    ease: Cubic.easeInOut,
-	    onComplete: function() {
-		$currentlyEnlarged.closest('.gallery').children('.lightbox').remove();
-	    }
-	});
-	$currentlyEnlarged.find('.caption').removeAttr('style');
+	putAway();
     });
 });
