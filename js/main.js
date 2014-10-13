@@ -249,9 +249,8 @@ $(window).load(function() {
 
 	// Calculate picWidth and picHeight
 
-	var picWidth = $columns.width();
+	var picWidth = $nextPicture.parent().width();
 	var picHeight = $nextPicture.height();
-
 	var viewportWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 	var viewportHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 	var viewportAspect = viewportWidth / viewportHeight;
@@ -264,8 +263,7 @@ $(window).load(function() {
 	    var fullTop = (viewportHeight - fullHeight) / 2;
 	    var fullLeft = 0;
 	    $nextPicture.css({
-		width: '100%',
-		height: fullHeight + 'px',
+		width: '100%'
 	    });
 	} else {
 	    var scaleFactor = viewportHeight / picHeight;
@@ -273,8 +271,7 @@ $(window).load(function() {
 	    var fullTop = 0;
 	    var fullLeft = (viewportWidth - fullWidth) / 2;
 	    $nextPicture.css({
-		height: '100%',
-		width: fullWidth + 'px',
+		width: fullWidth + 'px'
 	    });
 	}
 	$nextPicture.css({
@@ -318,8 +315,7 @@ $(window).load(function() {
 	    $currentlyEnlarged.css({
 		top: fullTop + 'px',
 		left: fullLeft + 'px',
-		width: '100%',
-		height: fullHeight + 'px'
+		width: '100%'
 	    });
 	}
 	// If picture is narrower than viewport
@@ -331,7 +327,6 @@ $(window).load(function() {
 	    $currentlyEnlarged.css({
 		top: fullTop + 'px',
 		left: fullLeft + 'px',
-		height: '100%',
 		width: fullWidth + 'px'
 	    });	    
 	}
@@ -351,5 +346,46 @@ $(window).load(function() {
 	}
 	var $nav = $('nav');
 	$nav.removeClass('show-nav');
+    });
+
+    $('.gallery').on('click', '.lightbox', function() {
+	// Calculate position to return picture to based on position
+	// of placeholder
+	var docPosition = $(window).scrollTop();
+	var picPosition = $currentlyEnlarged.prev().offset().top;
+	var fixedPositionTop = picPosition - docPosition;
+	var fixedPositionLeft = $currentlyEnlarged.prev().offset().left;
+	console.log(fixedPositionTop, fixedPositionLeft);
+
+	// Remove lightbox controls
+	$currentlyEnlarged.find('.fa-times').remove();
+	$currentlyEnlarged.closest('.gallery').children('.fa-chevron-circle-left').remove();
+	$currentlyEnlarged.closest('.gallery').children('.fa-chevron-circle-right').remove();
+	// Animate picture returning to its spot in the gallery
+	TweenLite.to($currentlyEnlarged, 0.8, {
+	    top: fixedPositionTop + 'px',
+	    left: fixedPositionLeft + 'px',
+	    width: $currentlyEnlarged.parent().width() + 'px',
+	    height: $currentlyEnlarged.prev().height(),
+	    ease: Cubic.easeInOut,
+	    onComplete: function() {
+		// Remove placeholder after animation complete
+		$currentlyEnlarged.prev().remove();
+
+		// Remove all styling from .picture div after animation complete
+		$currentlyEnlarged.attr('style', 'opacity: 1');
+		$currentlyEnlarged.addClass('not-enlarged');		    
+	    }
+	});
+
+	// Fade out and remove lightbox
+	TweenLite.to($currentlyEnlarged.closest('.gallery').children('.lightbox'), 0.8, {
+	    opacity: 0,
+	    ease: Cubic.easeInOut,
+	    onComplete: function() {
+		$currentlyEnlarged.closest('.gallery').children('.lightbox').remove();
+	    }
+	});
+	$currentlyEnlarged.find('.caption').removeAttr('style');
     });
 });
