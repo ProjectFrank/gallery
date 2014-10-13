@@ -30,12 +30,12 @@ $(window).load(function() {
     var $columns = $('.column');
 
     // Returns index of the shortest column
-    function findShortestColumn() {
+    function findShortestColumn($columns) {
 	var shortestHeight;
 	var shortestColumn;
 
 	for (var i = 0, l = $columns.length; i < l; i++) {
-	    var height = $($('.column')[i]).height();
+	    var height = $($columns[i]).height();
 	    console.log(height);
 	    if (height < shortestHeight || shortestHeight == undefined) {
 		shortestColumn = i;
@@ -47,32 +47,70 @@ $(window).load(function() {
 
     // Add images so that columns are somewhat even in height
     images.forEach(function(image) {
-    	var shortestColumn = findShortestColumn();
+    	var shortestColumn = findShortestColumn($columns);
     	$($columns[shortestColumn]).append(image);
     	var columnWidth = $($columns[shortestColumn]).width();
     });
 
+    (function evenColumns() {
+	var shortestColumnWidth = 100;
+	var secondShortestColumnWidth = 100;
+	var longestColumnWidth = 100;
+	var shortestColumn = $columns[findShortestColumn($columns)];
+	var $exclude = $columns.not(shortestColumn);
+	var secondShortestColumn = $columns[findShortestColumn($exclude)];
+	$exclude = $exclude.not(secondShortestColumn);
+	var longestColumn = $exclude[0];
+
+	var shortestColumnHeight = $(shortestColumn).height();
+	var secondShortestColumnHeight = $(secondShortestColumn).height();
+	var longestColumnHeight = $(longestColumn).height();	   
+
+	// Scale shortest column to equal height with second shortest column.
+	var scaleFactor = secondShortestColumnHeight / shortestColumnHeight;
+	shortestColumnWidth *= scaleFactor;
+	shortestColumnHeight *= scaleFactor;
+
+	// Scale second shortest and shortest columns to equal height with longest column
+	scaleFactor = longestColumnHeight / secondShortestColumnHeight;
+	shortestColumnWidth *= scaleFactor;
+	secondShortestColumnWidth *= scaleFactor;
+
+	// Convert widths to percentages
+	var total = shortestColumnWidth + secondShortestColumnWidth + longestColumnWidth;
+	shortestColumnWidth /= total;
+	secondShortestColumnWidth /= total;
+	longestColumnWidth /= total;
+
+	shortestColumnWidth *= 100;
+	secondShortestColumnWidth *= 100;
+	longestColumnWidth *= 100;
+
+	// Add styles to the columns
+	$(shortestColumn).css('width', shortestColumnWidth + '%');
+	$(secondShortestColumn).css('width', secondShortestColumnWidth + '%');
+	$(longestColumn).css('width', longestColumnWidth + '%');	
+    })();
+
     // Set up picture loading animation
     var $pictures = $('.gallery').find('.picture');
-    $pictures.css({top: '1280px', opacity: 0});
+    $pictures.css({transform:'translateY(1280px)', opacity: 0});
 
     // Stagger animations for each individual picture
     var i = 0;
     var intervalID = window.setInterval(function() {
-	$($pictures[i]).animate({
-	    top: 0,
-	    opacity: 1
-	}, 500, 'easeInOutCubic');
+	TweenLite.to($pictures[i], 0.5, {transform:'translateY(0)', opacity: 1, ease:Circ.easeOut});
 	i++;
 	if (i >= $pictures.length) {
 	    window.clearInterval(intervalID);
 	}
-    }, 180);
+    }, 150);
     
     // Curently enlarged picture
-    var $currentlyEnlarged;
+    var $currentlyEnlarged = $('.picture').first();
     
     $('.picture').on('click', function(event) {
+	var $picture = $(this);
 
 	// If the close button is clicked
 	if ($(event.target).hasClass('fa-times')) {
@@ -80,51 +118,55 @@ $(window).load(function() {
 	    // Calculate position to return picture to based on position
 	    // of placeholder
 	    var docPosition = $(window).scrollTop();
-	    var picPosition = $(this).prev().offset().top;
+	    var picPosition = $picture.prev().offset().top;
 	    var fixedPositionTop = picPosition - docPosition;
-	    var fixedPositionLeft = $(this).prev().offset().left;
+	    var fixedPositionLeft = $picture.prev().offset().left;
 	    console.log(fixedPositionTop, fixedPositionLeft);
 
 	    // Remove lightbox controls
-	    $(this).find('.fa-times').remove();
-	    $(this).closest('.gallery').children('.fa-chevron-circle-left').remove();
-	    $(this).closest('.gallery').children('.fa-chevron-circle-right').remove();
+	    $picture.find('.fa-times').remove();
+	    $picture.closest('.gallery').children('.fa-chevron-circle-left').remove();
+	    $picture.closest('.gallery').children('.fa-chevron-circle-right').remove();
 	    // Animate picture returning to its spot in the gallery
-	    $(this).animate({
+	    TweenLite.to($picture, 0.8, {
 		top: fixedPositionTop + 'px',
 		left: fixedPositionLeft + 'px',
-		width: $columns.width() + 'px',
-		height: $(this).prev().height()
-	    }, 1000, 'easeInOutCubic', function() {
-		// Remove placeholder after animation complete
-		$(this).prev().remove();
+		width: $picture.parent().width() + 'px',
+		height: $picture.prev().height(),
+		ease: Cubic.easeInOut,
+		onComplete: function() {
+		    // Remove placeholder after animation complete
+		    $picture.prev().remove();
 
-		// Remove all styling from .picture div after animation complete
-		$(this).attr('style', 'opacity: 1');
-		$(this).addClass('not-enlarged');
+		    // Remove all styling from .picture div after animation complete
+		    $picture.attr('style', 'opacity: 1');
+		    $picture.addClass('not-enlarged');		    
+		}
 	    });
 
 	    // Fade out and remove lightbox
-	    $(this).closest('.gallery').children('.lightbox').animate({
-		opacity: 0
-	    }, 1000, 'easeInOutCubic', function() {
-		$(this).closest('.gallery').children('.lightbox').remove();
+	    TweenLite.to($picture.closest('.gallery').children('.lightbox'), 0.8, {
+		opacity: 0,
+		ease: Cubic.easeInOut,
+		onComplete: function() {
+		    $picture.closest('.gallery').children('.lightbox').remove();
+		}
 	    });
-	    $(this).find('.caption').removeAttr('style');
+	    $picture.find('.caption').removeAttr('style');
 	}
 	// If a not enlarged picture is clicked
-	else if ($(this).hasClass('not-enlarged')) {
+	else if ($picture.hasClass('not-enlarged')) {
 	    // Set $currentlyEnlarged to the clicked picture
-	    $currentlyEnlarged = $(this);
+	    $currentlyEnlarged = $picture;
 	    var docPosition = $(window).scrollTop();
-	    var picPosition = $(this).offset().top;
+	    var picPosition = $picture.offset().top;
 	    var fixedPositionTop = picPosition - docPosition;
-	    var fixedPositionLeft = $(this).offset().left;
-	    var picWidth = $(this).width();
-	    var picHeight = $(this).height();
-	    $(this).css({'position': 'fixed', 'left': fixedPositionLeft, 'top': fixedPositionTop, 'width': picWidth, 'z-index': 998});
-	    $(this).before('<div class="placeholder">' + $currentlyEnlarged.children('img')[0].outerHTML + '</div>');
-	    $(this).prev().children('img').css({
+	    var fixedPositionLeft = $picture.offset().left;
+	    var picWidth = $picture.width();
+	    var picHeight = $picture.height();
+	    $picture.css({'position': 'fixed', 'left': fixedPositionLeft, 'top': fixedPositionTop, 'width': picWidth, 'z-index': 998});
+	    $picture.before('<div class="placeholder">' + $currentlyEnlarged.children('img')[0].outerHTML + '</div>');
+	    $picture.prev().children('img').css({
 		width: '100%'
 	    });
 
@@ -133,38 +175,41 @@ $(window).load(function() {
 	    var viewportAspect = viewportWidth / viewportHeight;
 	    var pictureAspect = picWidth / picHeight;
 	    
-	    $(this).closest('.gallery').append('<div class="lightbox"></div>');
+	    $picture.closest('.gallery').append('<div class="lightbox"></div>');
 	    if (pictureAspect >= viewportAspect) {
 		var scaleFactor = viewportWidth / picWidth;
 		var fullHeight = picHeight * scaleFactor;
 		var fullTop = (viewportHeight - fullHeight) / 2;
 		var fullLeft = 0;
-		$(this).animate({
+		TweenLite.to($picture, 0.8, {
 		    top: fullTop + 'px',
 		    left: fullLeft + 'px',
 		    width: '100%',
-		    height: fullHeight + 'px'
-		}, 1000, 'easeInOutCubic');
+		    height: fullHeight + 'px',
+		    ease: Cubic.easeInOut
+		});
 	    } else {
 		var scaleFactor = viewportHeight / picHeight;
 		var fullWidth = picWidth * scaleFactor;
 		var fullTop = 0;
 		var fullLeft = (viewportWidth - fullWidth) / 2;
-		$(this).animate({
+
+		TweenLite.to($picture, 0.8, {
 		    top: fullTop + 'px',
 		    left: fullLeft + 'px',
 		    height: '100%',
 		    width: fullWidth + 'px'
-		}, 1000, 'easeInOutCubic');
+		});
 	    }
-	    $(this).removeClass('not-enlarged');
-	    $(this).closest('.gallery').append('<i class="fa fa-chevron-circle-left"></i><i class="fa fa-chevron-circle-right"></i>');
-	    $(this).closest('.gallery').children('.lightbox').animate({
-		opacity: 0.8
-	    }, 1000, 'easeInOutCubic');
+	    $picture.removeClass('not-enlarged');
+	    $picture.closest('.gallery').append('<i class="fa fa-chevron-circle-left"></i><i class="fa fa-chevron-circle-right"></i>');
+	    TweenLite.to($picture.closest('.gallery').children('.lightbox'), 0.8, {
+		opacity: 0.8,
+		ease: Cubic.easeInOut
+	    });
 	    var button = '<i class="fa fa-times"></i>';
-	    $(this).append(button);
-	    $(this).find('.caption').css('height', '200px');
+	    $picture.append(button);
+	    $picture.find('.caption').css('height', '200px');
 	}
     });
 
@@ -291,5 +336,20 @@ $(window).load(function() {
 	    });	    
 	}
 	
+    });
+
+    // Listener for hamburger menu
+
+    $('nav .fa-bars').on('click', function() {
+	var $nav = $('nav');
+	$nav.toggleClass('show-nav');
+    });
+
+    $(document).on('click', function(e) {
+	if ($(e.target).hasClass('fa-bars')) {
+	    return;
+	}
+	var $nav = $('nav');
+	$nav.removeClass('show-nav');
     });
 });
