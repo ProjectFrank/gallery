@@ -1,12 +1,20 @@
 $(document).ready(function() {
-    $('.gallery').append('<img src="http://media.giphy.com/media/12Zr3hYqvEPvB6/giphy.gif" style="width: 100%; height: auto; position: absolute; top: 0; left: 0;">');
+//    $('.gallery').append('<img src="http://media.giphy.com/media/12Zr3hYqvEPvB6/giphy.gif" style="width: 100%; height: auto; position: absolute; top: 0; left: 0;">');
+
+    $('aside .gallery-selector').each(function() {
+	var $this = $(this);
+	if ($this.children().prop('href') == window.location.href) {
+	    $this.addClass('current');
+	}
+    });
 });
+
 
 $(window).load(function() {
     $('.gallery > img').remove();
     var images = [];
 
-    $('#gallery1 > li').each(function(_, picture) {
+    $('#gallery > li').each(function(_, picture) {
 	var image = $(picture).find('img')[0].outerHTML;
 	var title = $(picture).find('.image-title').text();
 	var description = $(picture).find('.image-description').text();
@@ -58,7 +66,7 @@ $(window).load(function() {
 	var longestColumnWidth = 100;
 	var shortestColumn = $columns[findShortestColumn($columns)];
 	var $exclude = $columns.not(shortestColumn);
-	var secondShortestColumn = $columns[findShortestColumn($exclude)];
+	var secondShortestColumn = $exclude[findShortestColumn($exclude)];
 	$exclude = $exclude.not(secondShortestColumn);
 	var longestColumn = $exclude[0];
 

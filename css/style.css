@@ -14,13 +14,21 @@ body {
   font-size: 1rem;
   padding-top: 60px;
   padding-bottom: 58px; }
+  /* line 16, /Users/frankwang/src/gallery/source/css/style.scss */
+  body > ul {
+    display: none; }
 
-/* line 18, /Users/frankwang/src/gallery/source/css/style.scss */
+/* line 21, /Users/frankwang/src/gallery/source/css/style.scss */
 img {
   max-width: 100%;
   height: auto; }
 
-/* line 23, /Users/frankwang/src/gallery/source/css/style.scss */
+/* line 26, /Users/frankwang/src/gallery/source/css/style.scss */
+a {
+  color: inherit;
+  text-decoration: none; }
+
+/* line 31, /Users/frankwang/src/gallery/source/css/style.scss */
 nav {
   position: fixed;
   top: 0;
@@ -29,17 +37,17 @@ nav {
   height: 60px;
   background: #FFF;
   z-index: 400; }
-  /* line 31, /Users/frankwang/src/gallery/source/css/style.scss */
+  /* line 39, /Users/frankwang/src/gallery/source/css/style.scss */
   nav .logo {
     float: left;
     position: absolute;
     top: 4px;
     left: 25px;
     cursor: pointer; }
-    /* line 37, /Users/frankwang/src/gallery/source/css/style.scss */
+    /* line 45, /Users/frankwang/src/gallery/source/css/style.scss */
     nav .logo:hover {
       opacity: 0.8; }
-  /* line 41, /Users/frankwang/src/gallery/source/css/style.scss */
+  /* line 49, /Users/frankwang/src/gallery/source/css/style.scss */
   nav .fa-bars {
     display: none;
     float: right;
@@ -47,17 +55,17 @@ nav {
     padding-right: 25px;
     padding-top: 17px;
     color: #16192a; }
-  /* line 49, /Users/frankwang/src/gallery/source/css/style.scss */
+  /* line 57, /Users/frankwang/src/gallery/source/css/style.scss */
   nav ul {
     position: absolute;
     top: 8px;
     right: 0;
     margin-right: 25px; }
-  /* line 55, /Users/frankwang/src/gallery/source/css/style.scss */
+  /* line 63, /Users/frankwang/src/gallery/source/css/style.scss */
   nav li {
     float: left;
     display: block; }
-    /* line 58, /Users/frankwang/src/gallery/source/css/style.scss */
+    /* line 66, /Users/frankwang/src/gallery/source/css/style.scss */
     nav li a {
       padding: 50px 20px 0 20px;
       color: #888;
@@ -66,16 +74,16 @@ nav {
       text-transform: uppercase;
       text-decoration: none; }
   @media (max-width: 680px) {
-    /* line 69, /Users/frankwang/src/gallery/source/css/style.scss */
+    /* line 77, /Users/frankwang/src/gallery/source/css/style.scss */
     nav.show-nav .fa {
       color: #888; }
-    /* line 72, /Users/frankwang/src/gallery/source/css/style.scss */
+    /* line 80, /Users/frankwang/src/gallery/source/css/style.scss */
     nav.show-nav ul {
       height: 156px; }
-    /* line 76, /Users/frankwang/src/gallery/source/css/style.scss */
+    /* line 84, /Users/frankwang/src/gallery/source/css/style.scss */
     nav .fa-bars {
       display: block; }
-    /* line 79, /Users/frankwang/src/gallery/source/css/style.scss */
+    /* line 87, /Users/frankwang/src/gallery/source/css/style.scss */
     nav ul {
       height: 0;
       right: 0;
@@ -86,47 +94,47 @@ nav {
       -webkit-transition: height 0.5s ease-in-out;
       transition: height 0.5s ease-in-out;
       background: #16192a; }
-    /* line 89, /Users/frankwang/src/gallery/source/css/style.scss */
+    /* line 97, /Users/frankwang/src/gallery/source/css/style.scss */
     nav li {
       padding: 10px;
       float: none; }
-      /* line 92, /Users/frankwang/src/gallery/source/css/style.scss */
+      /* line 100, /Users/frankwang/src/gallery/source/css/style.scss */
       nav li a {
         padding: 0;
         color: #fff; } }
 
-/* line 100, /Users/frankwang/src/gallery/source/css/style.scss */
+/* line 108, /Users/frankwang/src/gallery/source/css/style.scss */
 .sidebar {
   float: left;
   width: 25%; }
 
-/* line 105, /Users/frankwang/src/gallery/source/css/style.scss */
+/* line 113, /Users/frankwang/src/gallery/source/css/style.scss */
 .gallery {
   position: relative;
   float: left;
   width: 75%; }
 
-/* line 111, /Users/frankwang/src/gallery/source/css/style.scss */
+/* line 119, /Users/frankwang/src/gallery/source/css/style.scss */
 .gallery-selector {
   position: relative;
   padding: 6%;
   background: #CCC;
   border-bottom: 1px solid #FFF;
   cursor: pointer; }
-  /* line 117, /Users/frankwang/src/gallery/source/css/style.scss */
+  /* line 125, /Users/frankwang/src/gallery/source/css/style.scss */
   .gallery-selector h2 {
     margin-top: 7%; }
-  /* line 120, /Users/frankwang/src/gallery/source/css/style.scss */
+  /* line 128, /Users/frankwang/src/gallery/source/css/style.scss */
   .gallery-selector img {
     width: 30%;
     border: 2px solid #fff;
     float: left; }
-  /* line 125, /Users/frankwang/src/gallery/source/css/style.scss */
+  /* line 133, /Users/frankwang/src/gallery/source/css/style.scss */
   .gallery-selector .text {
     float: left;
     width: 55%;
     margin-left: 8%; }
-  /* line 130, /Users/frankwang/src/gallery/source/css/style.scss */
+  /* line 138, /Users/frankwang/src/gallery/source/css/style.scss */
   .gallery-selector:before {
     display: none;
     left: 100%;
@@ -140,60 +148,60 @@ nav {
     border-width: 30px;
     margin-top: -30px;
     z-index: 300; }
-  /* line 144, /Users/frankwang/src/gallery/source/css/style.scss */
+  /* line 152, /Users/frankwang/src/gallery/source/css/style.scss */
   .gallery-selector:hover {
     background: #16192a;
     color: #FFF; }
-  /* line 148, /Users/frankwang/src/gallery/source/css/style.scss */
+  /* line 156, /Users/frankwang/src/gallery/source/css/style.scss */
   .gallery-selector.current {
     background: #16192a;
     color: #FFF; }
-    /* line 151, /Users/frankwang/src/gallery/source/css/style.scss */
+    /* line 159, /Users/frankwang/src/gallery/source/css/style.scss */
     .gallery-selector.current:before {
       display: block; }
   @media (max-width: 1150px) {
-    /* line 156, /Users/frankwang/src/gallery/source/css/style.scss */
+    /* line 164, /Users/frankwang/src/gallery/source/css/style.scss */
     .gallery-selector .description {
       display: none; }
-    /* line 159, /Users/frankwang/src/gallery/source/css/style.scss */
+    /* line 167, /Users/frankwang/src/gallery/source/css/style.scss */
     .gallery-selector h2 {
       margin-top: 20%; }
-    /* line 162, /Users/frankwang/src/gallery/source/css/style.scss */
+    /* line 170, /Users/frankwang/src/gallery/source/css/style.scss */
     .gallery-selector:before {
       left: calc(100% - 10px); } }
   @media (max-width: 860px) {
-    /* line 167, /Users/frankwang/src/gallery/source/css/style.scss */
+    /* line 175, /Users/frankwang/src/gallery/source/css/style.scss */
     .gallery-selector img {
       display: none; } }
   @media (max-width: 500px) {
-    /* line 172, /Users/frankwang/src/gallery/source/css/style.scss */
+    /* line 180, /Users/frankwang/src/gallery/source/css/style.scss */
     .gallery-selector img {
       display: block;
       width: 80%;
       margin-left: 10%; }
-    /* line 177, /Users/frankwang/src/gallery/source/css/style.scss */
+    /* line 185, /Users/frankwang/src/gallery/source/css/style.scss */
     .gallery-selector .text {
       display: none; }
-    /* line 180, /Users/frankwang/src/gallery/source/css/style.scss */
+    /* line 188, /Users/frankwang/src/gallery/source/css/style.scss */
     .gallery-selector.current:before {
       display: none; } }
 
-/* line 186, /Users/frankwang/src/gallery/source/css/style.scss */
+/* line 194, /Users/frankwang/src/gallery/source/css/style.scss */
 .column {
   width: 33.333%;
   float: left; }
 
-/* line 191, /Users/frankwang/src/gallery/source/css/style.scss */
+/* line 199, /Users/frankwang/src/gallery/source/css/style.scss */
 .picture {
   position: relative;
   width: 100%;
   overflow: hidden; }
-  /* line 195, /Users/frankwang/src/gallery/source/css/style.scss */
+  /* line 203, /Users/frankwang/src/gallery/source/css/style.scss */
   .picture img {
     width: 100%;
     -webkit-transition: -webkit-transform 0.5s ease;
     transition: transform 0.5s ease; }
-  /* line 199, /Users/frankwang/src/gallery/source/css/style.scss */
+  /* line 207, /Users/frankwang/src/gallery/source/css/style.scss */
   .picture .fa-times {
     position: absolute;
     top: 20px;
@@ -206,37 +214,37 @@ nav {
     -webkit-transition: opacity 0.5s ease;
     transition: opacity 0.5s ease;
     cursor: pointer; }
-    /* line 210, /Users/frankwang/src/gallery/source/css/style.scss */
+    /* line 218, /Users/frankwang/src/gallery/source/css/style.scss */
     .picture .fa-times:hover {
       text-shadow: 0 0 1px #000; }
     @media (max-width: 680px) {
-      /* line 199, /Users/frankwang/src/gallery/source/css/style.scss */
+      /* line 207, /Users/frankwang/src/gallery/source/css/style.scss */
       .picture .fa-times {
         visibility: visible;
         opacity: 1; } }
-  /* line 219, /Users/frankwang/src/gallery/source/css/style.scss */
+  /* line 227, /Users/frankwang/src/gallery/source/css/style.scss */
   .picture:hover .caption {
     opacity: 1;
     visibility: visible; }
-  /* line 223, /Users/frankwang/src/gallery/source/css/style.scss */
+  /* line 231, /Users/frankwang/src/gallery/source/css/style.scss */
   .picture:hover .fa-times {
     visibility: visible;
     opacity: 1; }
 
-/* line 230, /Users/frankwang/src/gallery/source/css/style.scss */
+/* line 238, /Users/frankwang/src/gallery/source/css/style.scss */
 .not-enlarged {
   cursor: pointer; }
-  /* line 233, /Users/frankwang/src/gallery/source/css/style.scss */
+  /* line 241, /Users/frankwang/src/gallery/source/css/style.scss */
   .not-enlarged:hover img {
     -webkit-transform: scale(1.2);
     -ms-transform: scale(1.2);
     transform: scale(1.2); }
   @media (max-width: 680px) {
-    /* line 238, /Users/frankwang/src/gallery/source/css/style.scss */
+    /* line 246, /Users/frankwang/src/gallery/source/css/style.scss */
     .not-enlarged .caption {
       visibility: hidden; } }
 
-/* line 244, /Users/frankwang/src/gallery/source/css/style.scss */
+/* line 252, /Users/frankwang/src/gallery/source/css/style.scss */
 .caption {
   position: absolute;
   bottom: 0;
@@ -252,12 +260,12 @@ nav {
   -webkit-transition: height 0.8s ease-in-out, opacity 0.3s ease-in-out;
   transition: height 0.8s ease-in-out, opacity 0.3s ease-in-out; }
   @media (max-width: 680px) {
-    /* line 244, /Users/frankwang/src/gallery/source/css/style.scss */
+    /* line 252, /Users/frankwang/src/gallery/source/css/style.scss */
     .caption {
       visibility: visible;
       opacity: 1; } }
 
-/* line 263, /Users/frankwang/src/gallery/source/css/style.scss */
+/* line 271, /Users/frankwang/src/gallery/source/css/style.scss */
 .lightbox {
   position: fixed;
   top: 0;
@@ -268,7 +276,7 @@ nav {
   opacity: 0;
   z-index: 500; }
 
-/* line 274, /Users/frankwang/src/gallery/source/css/style.scss */
+/* line 282, /Users/frankwang/src/gallery/source/css/style.scss */
 .fa-chevron-circle-left, .fa-chevron-circle-right {
   position: fixed;
   top: calc(50vh - 3rem);
@@ -277,19 +285,19 @@ nav {
   text-shadow: 0 0 1px #888;
   z-index: 999;
   cursor: pointer; }
-  /* line 282, /Users/frankwang/src/gallery/source/css/style.scss */
+  /* line 290, /Users/frankwang/src/gallery/source/css/style.scss */
   .fa-chevron-circle-left:hover, .fa-chevron-circle-right:hover {
     text-shadow: 0 0 6px #fff; }
 
-/* line 287, /Users/frankwang/src/gallery/source/css/style.scss */
+/* line 295, /Users/frankwang/src/gallery/source/css/style.scss */
 .fa-chevron-circle-left {
   left: 20px; }
 
-/* line 291, /Users/frankwang/src/gallery/source/css/style.scss */
+/* line 299, /Users/frankwang/src/gallery/source/css/style.scss */
 .fa-chevron-circle-right {
   right: 20px; }
 
-/* line 295, /Users/frankwang/src/gallery/source/css/style.scss */
+/* line 303, /Users/frankwang/src/gallery/source/css/style.scss */
 footer {
   position: absolute;
   left: 0;
@@ -303,3 +311,39 @@ footer {
   font-size: 1.5rem;
   line-height: 1;
   color: #666; }
+
+/* line 322, /Users/frankwang/src/gallery/source/css/style.scss */
+.pace {
+  -webkit-pointer-events: none;
+  pointer-events: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
+
+/* line 330, /Users/frankwang/src/gallery/source/css/style.scss */
+.pace.pace-inactive .pace-progress {
+  display: none; }
+
+/* line 334, /Users/frankwang/src/gallery/source/css/style.scss */
+.pace .pace-progress {
+  position: fixed;
+  z-index: 2000;
+  top: 100px;
+  right: 0;
+  height: 5rem;
+  width: 5rem; }
+
+/* line 343, /Users/frankwang/src/gallery/source/css/style.scss */
+.pace .pace-progress:after {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: .5rem;
+  content: attr(data-progress-text);
+  font-family: "Helvetica Neue", sans-serif;
+  font-weight: 100;
+  font-size: 5rem;
+  line-height: 1;
+  text-align: right;
+  color: white; }
