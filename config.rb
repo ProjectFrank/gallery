@@ -57,6 +57,9 @@ set :relative_links, true
 
 activate :directory_indexes
 
+# Use relative URLs
+activate :relative_assets
+
 activate :autoprefixer do |config|
   config.browsers = ['last 2 versions', 'Explorer >= 9']
   config.cascade = false
@@ -76,7 +79,7 @@ configure :build do
 
   # Use relative URLs
   activate :relative_assets
-
+  
   # pretty URL regardless of server, see nginx try_files setting.
   activate :directory_indexes
 
