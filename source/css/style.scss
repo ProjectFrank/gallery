@@ -21,11 +21,19 @@ nav {
     left: 0;
     width: 100%;
     height: 50px;
+    background: #FFF;
+    z-index: 999;
     .logo {
 	float: left;
+	position: absolute;
+	top: 0;
+	left: 25px;
     }
     ul {
 	float: right;
+	position: absolute;
+	top: 8px;
+	right: 25px;
     }
     li {
 	float: left;
@@ -51,12 +59,38 @@ nav {
 }
 
 .gallery-selector {
+    position: relative;
     padding: 20px;
+    background: #CCC;
+    border-bottom: 1px solid #FFF;
     img {
 	float: left;
     }
     .text {
 	float: left;
+	width: 55%;
+	margin-left: 8%;
+    }
+    &:before {
+    	display: none;
+	left: 100%;
+	top: 50%;
+	border: solid transparent;
+	content: "";
+	height: 0;
+	width: 0;
+	position: absolute;
+	border-left-color: #16192a;
+	border-width: 30px;
+	margin-top: -30px;
+	z-index: 998;
+    }
+    &:hover {
+	background: #16192a;
+	color: #FFF;
+	&:before {
+	    display: block;
+	}
     }
 }
 
@@ -152,4 +186,14 @@ nav {
 
 .fa-chevron-circle-right {
     right: 20px;
+}
+
+footer {
+    clear: both;
+    width: 100%;
+    height: 50px;
+    padding-top: 10px;
+    padding-right: 20px;
+    background: #EEE;
+    text-align: right;
 }
