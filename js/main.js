@@ -1,5 +1,5 @@
 $(document).ready(function() {
-//    $('.gallery').append('<img src="http://media.giphy.com/media/12Zr3hYqvEPvB6/giphy.gif" style="width: 100%; height: auto; position: absolute; top: 0; left: 0;">');
+    //    $('.gallery').append('<img src="http://media.giphy.com/media/12Zr3hYqvEPvB6/giphy.gif" style="width: 100%; height: auto; position: absolute; top: 0; left: 0;">');
 
     $('aside .gallery-selector').each(function() {
 	var $this = $(this);
@@ -11,7 +11,8 @@ $(document).ready(function() {
 
 
 $(window).load(function() {
-    $('.gallery > img').remove();
+
+    // Retrieve images and captions from <ul> and create array of divs
     var images = [];
 
     $('#gallery > li').each(function(_, picture) {
@@ -33,7 +34,7 @@ $(window).load(function() {
 	images.push(html);
     });
 
-    $('#gallery1').remove();
+    $('#gallery').remove();
 
     var $columns = $('.column');
 
@@ -105,6 +106,7 @@ $(window).load(function() {
     $pictures.css({transform:'translateY(1280px)', opacity: 0});
 
     // Stagger animations for each individual picture
+    // Animation slides images up from bottom of screen
     var i = 0;
     var intervalID = window.setInterval(function() {
 	TweenLite.to($pictures[i], 0.5, {transform:'translateY(0)', opacity: 1, ease:Circ.easeOut});
@@ -114,56 +116,66 @@ $(window).load(function() {
 	}
     }, 150);
     
-    // Curently enlarged picture
+    // Initialize $currentlyEnlarged to some div with class of picture
     var $currentlyEnlarged = $('.picture').first();
     
-    function putAway() {
+    // Put away photo enlarged in lightbox mode
+    // Accepts boolean argument indicating whether to animate action
+    function putAway(animate) {
 	// Calculate position to return picture to based on position
 	// of placeholder
 	var docPosition = $(window).scrollTop();
 	var picPosition = $currentlyEnlarged.prev().offset().top;
 	var fixedPositionTop = picPosition - docPosition;
 	var fixedPositionLeft = $currentlyEnlarged.prev().offset().left;
-	console.log(fixedPositionTop, fixedPositionLeft);
 
-	// Remove lightbox controls
-	$currentlyEnlarged.find('.fa-times').remove();
-	$currentlyEnlarged.closest('.gallery').children('.fa-chevron-circle-left').remove();
-	$currentlyEnlarged.closest('.gallery').children('.fa-chevron-circle-right').remove();
-	// Animate picture returning to its spot in the gallery
-	TweenLite.to($currentlyEnlarged, 0.8, {
-	    top: fixedPositionTop + 'px',
-	    left: fixedPositionLeft + 'px',
-	    width: $currentlyEnlarged.parent().width() + 'px',
-	    height: $currentlyEnlarged.prev().height(),
-	    ease: Cubic.easeInOut,
-	    onComplete: function() {
-		// Remove placeholder after animation complete
-		$currentlyEnlarged.prev().remove();
+	if (animate) {
+	    // Remove lightbox controls
+	    $currentlyEnlarged.find('.fa-times').remove();
+	    $currentlyEnlarged.closest('.gallery').children('.fa-chevron-circle-left').remove();
+	    $currentlyEnlarged.closest('.gallery').children('.fa-chevron-circle-right').remove();
+	    // Animate picture returning to its spot in the gallery
+	    TweenLite.to($currentlyEnlarged, 0.8, {
+		top: fixedPositionTop + 'px',
+		left: fixedPositionLeft + 'px',
+		width: $currentlyEnlarged.parent().width() + 'px',
+		height: $currentlyEnlarged.prev().height(),
+		ease: Cubic.easeInOut,
+		onComplete: function() {
+		    // Remove placeholder after animation complete
+		    $currentlyEnlarged.prev().remove();
 
-		// Remove all styling from .picture div after animation complete
-		$currentlyEnlarged.attr('style', 'opacity: 1');
-		$currentlyEnlarged.addClass('not-enlarged');		    
-	    }
-	});
+		    // Remove all styling from .picture div after animation complete
+		    $currentlyEnlarged.removeAttr('style');
+		    $currentlyEnlarged.addClass('not-enlarged');		    
+		}
+	    });
 
-	// Fade out and remove lightbox
-	TweenLite.to($currentlyEnlarged.closest('.gallery').children('.lightbox'), 0.8, {
-	    opacity: 0,
-	    ease: Cubic.easeInOut,
-	    onComplete: function() {
-		$currentlyEnlarged.closest('.gallery').children('.lightbox').remove();
-	    }
-	});
+	    // Fade out and remove lightbox
+	    TweenLite.to($currentlyEnlarged.closest('.gallery').children('.lightbox'), 0.8, {
+		opacity: 0,
+		ease: Cubic.easeInOut,
+		onComplete: function() {
+		    $currentlyEnlarged.closest('.gallery').children('.lightbox').remove();
+		}
+	    });
+	} else {
+	    // Put current picture away	
+	    $currentlyEnlarged.removeAttr('style');
+	    $currentlyEnlarged.children('.caption').css('height', '100%');
+	    $currentlyEnlarged.children('.fa-times').remove();
+	    $currentlyEnlarged.addClass('not-enlarged');
+	    $currentlyEnlarged.prev().remove();
+	}
 	$currentlyEnlarged.find('.caption').removeAttr('style');	
     }
 
     $('.picture').on('click', function(event) {
 	var $picture = $(this);
 
-	// If the close button is clicked
+	// If the close button is clicked, put away enlarged image
 	if ($(event.target).hasClass('fa-times')) {
-	    putAway();
+	    putAway(true);
 	}
 	// If a not enlarged picture is clicked
 	else if ($picture.hasClass('not-enlarged')) {
@@ -251,13 +263,6 @@ $(window).load(function() {
     	    }
 	}
 
-	// Put current picture away	
-	$currentlyEnlarged.removeAttr('style');
-	$currentlyEnlarged.children('.caption').css('height', '100%');
-	$currentlyEnlarged.children('.fa-times').remove();
-	$currentlyEnlarged.addClass('not-enlarged');
-	$currentlyEnlarged.prev().remove();
-
 	// Calculate picWidth and picHeight
 	var picWidth = $nextPicture.parent().width();
 	var picHeight = $nextPicture.height();
@@ -265,6 +270,9 @@ $(window).load(function() {
 	var viewportHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 	var viewportAspect = viewportWidth / viewportHeight;
 	var pictureAspect = picWidth / picHeight;
+
+	// Put away current picture without animating
+	putAway(false);
 	
 	// Bring out the next picture
 	if (pictureAspect >= viewportAspect) {
@@ -325,7 +333,8 @@ $(window).load(function() {
 	    $currentlyEnlarged.css({
 		top: fullTop + 'px',
 		left: fullLeft + 'px',
-		width: '100%'
+		width: '100%',
+		height: fullHeight + 'px'
 	    });
 	}
 	// If picture is narrower than viewport
@@ -337,7 +346,8 @@ $(window).load(function() {
 	    $currentlyEnlarged.css({
 		top: fullTop + 'px',
 		left: fullLeft + 'px',
-		width: fullWidth + 'px'
+		width: fullWidth + 'px',
+		height: '100%'
 	    });	    
 	}
 	
@@ -359,6 +369,6 @@ $(window).load(function() {
     });
 
     $('.gallery').on('click', '.lightbox', function() {
-	putAway();
+	putAway(true);
     });
 });
