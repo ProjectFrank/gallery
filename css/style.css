@@ -319,31 +319,68 @@ footer {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  user-select: none; }
+  user-select: none;
+  -webkit-perspective: 12rem;
+  -ms-perspective: 12rem;
+  perspective: 12rem;
+  z-index: 2000;
+  position: fixed;
+  height: 6rem;
+  width: 6rem;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0; }
 
-/* line 330, /Users/frankwang/src/gallery/source/css/style.scss */
+/* line 347, /Users/frankwang/src/gallery/source/css/style.scss */
 .pace.pace-inactive .pace-progress {
   display: none; }
 
-/* line 334, /Users/frankwang/src/gallery/source/css/style.scss */
+/* line 351, /Users/frankwang/src/gallery/source/css/style.scss */
 .pace .pace-progress {
   position: fixed;
   z-index: 2000;
-  top: 100px;
-  right: 0;
-  height: 5rem;
-  width: 5rem; }
-
-/* line 343, /Users/frankwang/src/gallery/source/css/style.scss */
-.pace .pace-progress:after {
   display: block;
   position: absolute;
+  left: 0;
   top: 0;
-  right: .5rem;
-  content: attr(data-progress-text);
+  height: 6rem;
+  width: 6rem !important;
+  line-height: 6rem;
+  font-size: 2rem;
+  border-radius: 50%;
+  background: rgba(34, 153, 221, 0.8);
+  color: #fff;
   font-family: "Helvetica Neue", sans-serif;
   font-weight: 100;
-  font-size: 5rem;
-  line-height: 1;
-  text-align: right;
-  color: white; }
+  text-align: center;
+  -webkit-animation: pace-3d-spinner linear infinite 2s;
+  -ms-animation: pace-3d-spinner linear infinite 2s;
+  animation: pace-3d-spinner linear infinite 2s;
+  -webkit-transform-style: preserve-3d;
+  -ms-transform-style: preserve-3d;
+  transform-style: preserve-3d; }
+
+/* line 382, /Users/frankwang/src/gallery/source/css/style.scss */
+.pace .pace-progress:after {
+  content: attr(data-progress-text);
+  display: block; }
+
+@-webkit-keyframes pace-3d-spinner {
+  from {
+    -webkit-transform: rotateY(0deg); }
+  to {
+    -webkit-transform: rotateY(360deg); } }
+@-ms-keyframes pace-3d-spinner {
+  from {
+    -ms-transform: rotateY(0deg); }
+  to {
+    -ms-transform: rotateY(360deg); } }
+@keyframes pace-3d-spinner {
+  from {
+    -webkit-transform: rotateY(0deg);
+    transform: rotateY(0deg); }
+  to {
+    -webkit-transform: rotateY(360deg);
+    transform: rotateY(360deg); } }
